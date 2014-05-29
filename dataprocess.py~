@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+#coding:utf-8
+
+'''
+function:corpus preprocess
+date:2014-05-29
+author:jwchen
+'''
+
+import nltk,os
+
+def get_folder_list(path):
+    folderlist = os.listdir(path)
+    return folderlist
+
+def get_file_list(path,folder):
+    file_path = path+'/'+folder
+    file_list = os.listdir(file_path)
+    return file_list
+
+def dataprocess():
+    
+
+if __name__=="__main__":
+    corpus_dir = "./data"
+

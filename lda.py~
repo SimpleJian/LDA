@@ -8,6 +8,13 @@ date:2014-05-29
 '''
 import random,os
 
+alpha = 0.1
+beta = 0.1
+K  = 10
+iter_num = 50
+top_words = 20
+
+
 corpus_text = './data/test.csv'
 
 class Document(object):
