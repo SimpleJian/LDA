@@ -1,0 +1,92 @@
+#!/usr/bin/env python
+#coding:utf-8
+
+'''
+function:LDA with Gibbs sampling
+author:jwchen
+date:2014-05-29
+'''
+import random,os
+
+corpus_text = './data/test.csv'
+
+class Document(object):
+    def __init__(self):
+        self.words = []
+        self.length = 0
+
+class Dataset(object):
+    def __init__(self):
+        self.M = 0
+        self.V = 0
+        self.docs = []
+        self.word2id = {} #(word,word_id)dict
+        self.id2word = {} #(word_id,word)dict
+    
+class Model(object):
+    def __init__(self,dataset):
+        self.dataset = dataset
+        self.K = K
+        self.alpha = alpha
+        self.beta = beta
+        self.item_num = iter_num
+        self.top_words = top_words
+
+        self.p = []     #double,store the temporary variables
+        self.zmn = []   #theme dis of every word n in every document
+        self.nmk = []   #the count for theme k in document m
+        self.nmsum = [] #sum for theme in document m 
+        self.nkt = []   #the count for word t  in  theme k
+        self.nksum = [] #sum for word in theme k (all theme)
+        self.theta = [] #dis of document-theme
+        self.phi = []   #dis of theme-word 
+
+        def init_par(self):
+            self.p = [0.0 for x in range(self.K)]
+            self.nkt = [[0 for y in range(self.K)] for x in range(self.dataset.V)]
+            self.nksum = [0 for x in range(self.K)]
+            self.nkm = [[0 for y in range(self.K)] for x in range(self.dataset.M)]
+            self.nmsum [0 for x in range(self.dataset.M)]
+            self.zmn = [ [] for x in range(self.dataset.M)]
+            for x in range(self.dataset.M):
+                self.zmn[x] = [0 for y in range(self.dataset.docs[x].length)]
+                self.nksum = self.dataset.docs[x].length
+                for y in range(self.dataset.docs[x].length):
+                    topic = random.randint(self.K-1)
+                    self.zmn[x][y] = topic
+                    self.nkt[self.dataset.docs[x].words[y]][topic] += 1
+                    
+            
+            
+
+
+def readfile():
+    print 'Read corpus data'
+    f = open(corpus_text,'rb')
+    corpus = f.readlines()
+    
+    dataset = Dataset()
+    wordid = 0
+    for line in corpus:
+        line =line.replace('\r\n','')
+        words = line.split(',')
+        doc = Document()
+        for word in words:
+            if dataset.word2id.has_key(word):
+                doc.words.append(dataset.word2id[word])
+            else:
+                dataset.word2id[word] = wordid
+                dataset.id2word[wordid] = word
+                doc.words.append(wordid)
+                wordid += 1
+        doc.length = len(words)
+        dataset.docs.append(doc)
+    dataset.M = len(dataset.docs)
+    dataset.V = len(dataset.word2id)
+    print 'There are %d document'%dataset.M
+    print 'There are %d words'%dataset.V
+
+if __name__=="__main__":
+    readfile()
+    
+
